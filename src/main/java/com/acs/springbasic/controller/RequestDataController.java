@@ -30,6 +30,7 @@ public class RequestDataController {
     // @PathVariable() :
     // 모든 HTTP 메서드에서 URL의 특정 패턴에 따라 데이터를 추출 (URL에서 추출하는 것임)
     // GET http://localhost:4000/request-data/path-variable/받고싶어값~/하나더
+    // 기능을 기준으로 이름 설정 (데이터베이스 기준 X)
     @GetMapping({
         "/path-variable/{var}/{str}",
         "/path-variable/{var}/",
@@ -40,6 +41,30 @@ public class RequestDataController {
         @PathVariable(name="str", required=false) String str 
     ) {
         return "읽은 경로 변수 : " + var + ", " + str;
+    };
+
+    //! 주의
+    // 경로 변수를 사용하여 URL 패턴을 작성할 때
+    // 겹치는 패턴이 존재하는지 잘 확인해야 함
+    @GetMapping("/path-variable/other") // "/path-variable/{var}" 겹침
+    public String otherPathVariable() {
+        return "other 메서드 호출";
+    };
+
+    // /path-variable/another/another : 밑에 두 개가 겹쳐져서 에러!
+
+    @GetMapping("/path-variable/{var}/another")
+    public String anotherPathVariable1(
+        @PathVariable("var") String var
+    ) {
+        return "another1";
+    };
+
+    @GetMapping("/path-variable/another/{var}")
+    public String anotherPathVariable2(
+        @PathVariable("var") String var
+    ) {
+        return "another2";
     };
 
 }
