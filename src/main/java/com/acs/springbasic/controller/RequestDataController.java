@@ -92,6 +92,7 @@ public class RequestDataController {
     @PostMapping("/validation")
     public String validation(
         @RequestBody @Valid Validation requestBody
+        // @Valid : 검사할 곳에 지정해야 함!
     ) {
         return "정상";
     };
