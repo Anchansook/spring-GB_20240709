@@ -1,5 +1,10 @@
 package com.acs.springbasic.dto;
 
+import org.hibernate.validator.constraints.Length;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +21,28 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Validation {
     
+    // @NotNull : null을 허용하지 않음
+    @NotNull
     private String notNull;
+
+    // @NotEmpty : '문자열 타입'에서 null과 빈문자열("")을 허용하지 않음
+    @NotEmpty
+    private String notEmpty;
+
+    // @NotBlank : '문자열 타입'에서 null, 빈문자열(""), 공백 문자열(" ")을 허용하지 않음
+    @NotBlank
+    private String notBlank;
+
+    //& client로부터 데이터를 받을 때는 기본형 데이터타입을 쓰지 않는게 좋음
+    @NotNull 
+    // int 타입은 값 지정 안하면 0이 들어가므로 null이 아니라서 에러가 안 남
+    //& @NotBlank : 문자열만 검사하므로 다른 타입에선 사용하면 안됨
+    private Integer number;
+
+    // @Length(min=?, max=?) : '문자열 타입'에서 길이의 최소, 최대를 지정
+    //                          null까지는 검사하지 않음
+    @Length(min=4)
+    @NotNull
+    private String length;
 
 }

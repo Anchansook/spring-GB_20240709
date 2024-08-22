@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.acs.springbasic.dto.Validation;
+
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -84,6 +87,13 @@ public class RequestDataController {
     ) {
         return "Request Body data : " + requestBody.getName() + ", " + requestBody.getAge();
         // 그냥은 주소 참조값만 나옴, 그래서 requestBody.getName(), requestBody.getAge() 이렇게 확인!
+    };
+
+    @PostMapping("/validation")
+    public String validation(
+        @RequestBody @Valid Validation requestBody
+    ) {
+        return "정상";
     };
 
 }
