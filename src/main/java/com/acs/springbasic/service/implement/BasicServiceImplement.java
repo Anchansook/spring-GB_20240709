@@ -13,7 +13,7 @@ import com.acs.springbasic.service.BasicService;
 // - Controller로부터 받은 요청을 처리하고
 //   그 해당 처리 중 데이터베이스 작업이 필요하면 Repository 영역으로 요청
 
-// @Service
+//# @Service
 // : 해당 클래스를 Spring Bean으로 등록하는 어노테이션
 //   , @Component와 동일하지만 가독성 향상을 위해 Service 이름을 사용
 // @Component
