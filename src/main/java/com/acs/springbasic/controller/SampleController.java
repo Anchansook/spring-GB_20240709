@@ -1,6 +1,8 @@
 package com.acs.springbasic.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +28,13 @@ public class SampleController {
         ResponseEntity<String> response = sampleService.postSample1(requestBody);
         return response;
     }
+
+    @DeleteMapping("/{sampleId}")
+    public ResponseEntity<String> deleteSample1(
+        @PathVariable("sampleId") String sampleId 
+    ) {
+        ResponseEntity<String> response = sampleService.deleteSample1(sampleId);
+        return response;
+    };
 
 }
