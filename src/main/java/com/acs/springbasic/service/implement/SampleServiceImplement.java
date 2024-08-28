@@ -1,12 +1,16 @@
 package com.acs.springbasic.service.implement;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.acs.springbasic.dto.PostSample1RequestDto;
 import com.acs.springbasic.entity.SampleTable1Entity;
+import com.acs.springbasic.entity.SampleUserEntity;
 import com.acs.springbasic.repository.SampleTable1Repository;
+import com.acs.springbasic.repository.SampleUserRepository;
 import com.acs.springbasic.service.SampleService;
 
 import lombok.RequiredArgsConstructor;
@@ -15,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SampleServiceImplement implements SampleService {
 
+    private final SampleUserRepository sampleUserRepository;
     private final SampleTable1Repository sampleTable1Repository;
 
     @Override
@@ -60,6 +65,14 @@ public class SampleServiceImplement implements SampleService {
 
         return ResponseEntity.status(HttpStatus.OK).body("성공");
 
+    }
+
+    @Override
+    public ResponseEntity<String> queryString() {
+
+        List<SampleUserEntity> sampleUserEntities = sampleUserRepository.getJpql2("홍길동", "부산광역시");
+
+        return ResponseEntity.status(HttpStatus.OK).body(sampleUserEntities.toString());
     }
     
 }
