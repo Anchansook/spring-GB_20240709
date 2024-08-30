@@ -72,4 +72,8 @@ extends JpaRepository<SampleUserEntity, String> { // PK의 타입
         @Param("address") String address
     );
 
+    // ======================================================================
+
+    SampleUserEntity findByUserId(String userId);
+
 }

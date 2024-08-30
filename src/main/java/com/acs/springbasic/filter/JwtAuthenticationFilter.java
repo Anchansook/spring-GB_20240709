@@ -1,13 +1,21 @@
 package com.acs.springbasic.filter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.acs.springbasic.entity.SampleUserEntity;
 import com.acs.springbasic.provider.JwtProvider;
+import com.acs.springbasic.repository.SampleUserRepository;
 
-import jakarta.el.ELException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
+    private final SampleUserRepository sampleUserRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -43,6 +52,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
+
+            // 3. 데이터베이스에 존재하는 유저인지 확인
+            SampleUserEntity userEntity = sampleUserRepository.findByUserId(subject);
+            if (userEntity == null) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+            //% 인증완룡 ================================================================
+
+            // 4. 접근주체의 권한 리스트 지정
+            //& 창 하단 Java: Ready 클릭 -> Clean Workspace cache -> Reload and delete
+            List<GrantedAuthority> roles = AuthorityUtils.NO_AUTHORITIES;
+            if (subject.equals("qwer1234")) {
+                roles = new ArrayList<>();
+                roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            }
+
+            // 5. principle에 대한 정보를 controller로 전달하기 위해 context에 저장
+
+            // 5-1. 인증된 사용자 객체를 생성
+            // UsernamePasswordAuthenticationToken(사용자 정보, 비밀번호, 권한);
+            AbstractAuthenticationToken authenticationToken
+                = new UsernamePasswordAuthenticationToken(userEntity, null, roles);
 
         } catch (Exception exception) {
 
