@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 //# filter : 
 // - 서버로직과 서블릿 사이에서 http request에 대한 사전 검사 작업을 수행하는 영역
 // - filter에서 걸러진 request는 서블릿까지 도달하지 못하고 reject 됨
-
+@Component
 @RequiredArgsConstructor
 // OncePerRequestFilter라는 추상클래스를 확장 구현하여 filter 클래스로 생성
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

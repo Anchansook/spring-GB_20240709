@@ -77,21 +77,21 @@ public class WebSecurityConfig {
             // - 인증된 클라이언트 중 특정 권한을 가진 클라이언트만 접근할 수 있도록 허용
             .authorizeHttpRequests(request -> request
                 //# requestMatchers() : URL 패턴, HTTP 메서드 + URL 패턴, HTTP 메서드마다 접근 허용 방식을 지정하는 메서드
+                // * 패턴 하나만, ** 패턴 몇 개가 오든 상관없음
                 //& permitAll() : 모든 클라이언트가 접근할 수 있도록 지정
                 //& hasRole(권한) : 특정 권한을 가진 클라이언트만 접근할 수 있도록 지정
                 //& authenticated() : 인증된 모든 클라이언트가 접근할 수 있도록 지정
                 .requestMatchers("/anyone/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/sample/jwt/*").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/**").authenticated()
-                .requestMatchers(HttpMethod.GET).authenticated()
+                // .requestMatchers(HttpMethod.GET).authenticated()
                 .requestMatchers(HttpMethod.POST, "/notice").hasRole("ADMIN")
                 //& anyRequest() : requestMatchers로 지정한 메서드 혹은 URL이 아닌 모든 요청
                 .anyRequest().authenticated()
             )
             // jwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 등록
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-
 
             return security.build();
 
