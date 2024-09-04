@@ -100,7 +100,6 @@ public class AuthServiceImplement implements AuthService {
             String password = dto.getPassword();
             String encodedPassword = userEntity.getPassword();
 
-            // matches() : 암호화된 비밀번호 비교 확인하는 메서드
             boolean isMatched = passwordEncoder.matches(password, encodedPassword);
             if (!isMatched) return "로그인 정보가 일치하지 않습니다.";
 
