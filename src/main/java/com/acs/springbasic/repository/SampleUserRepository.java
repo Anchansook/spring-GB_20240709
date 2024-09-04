@@ -74,6 +74,9 @@ extends JpaRepository<SampleUserEntity, String> { // PK의 타입
 
     // ======================================================================
 
+    boolean existsByUserId(String userId);
+    boolean existsByTelNumber(String telNumber);
+
     SampleUserEntity findByUserId(String userId);
 
 }
