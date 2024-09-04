@@ -8,12 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.acs.springbasic.dto.PostUserRequestDto;
+import com.acs.springbasic.dto.SignInRequestDto;
+import com.acs.springbasic.service.AuthService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
+
+    private final AuthService authService;
     
     @GetMapping("")
     public String getAuth(
@@ -32,7 +38,16 @@ public class AuthController {
     public String signUp(
         @RequestBody @Valid PostUserRequestDto requestBody
     ) {
-        return null;
+        String response = authService.signUp(requestBody);
+        return response;
+    };
+
+    @PostMapping("/sign-in")
+    public String signIn(
+        @RequestBody @Valid SignInRequestDto requestBody
+    ) {
+        String response = authService.signIn(requestBody);
+        return response;
     };
 
 }

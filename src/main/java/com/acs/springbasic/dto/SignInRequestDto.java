@@ -10,16 +10,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostUserRequestDto {
+public class SignInRequestDto {
     
     @NotBlank
     private String userId;
     @NotBlank
     private String password;
-    @NotBlank
-    private String name;
-    private String address;
-    @NotBlank
-    private String telNumber;
 
 }
