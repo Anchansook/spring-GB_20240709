@@ -21,6 +21,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.acs.springbasic.filter.JwtAuthenticationFilter;
+import com.acs.springbasic.handler.OAuth2SuccessHandler;
+import com.acs.springbasic.service.implement.OAuth2UserServiceImplement;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,6 +44,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2UserServiceImplement oAuth2UserService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     // ▼ 인스턴스 생성이 목적이 아닌 호출이 목적
@@ -102,7 +106,10 @@ public class WebSecurityConfig {
 
             // OAuth2 인증 처리
             .oauth2Login(oauth2 -> oauth2
+                .authorizationEndpoint(endPoint -> endPoint.baseUri("/auth/sns"))
                 .redirectionEndpoint(endPoint -> endPoint.baseUri("/oauth2/callback/*"))
+                .userInfoEndpoint(endPoint -> endPoint.userService(oAuth2UserService))
+                .successHandler(oAuth2SuccessHandler)
             )
 
             // 인증 및 인가 과정에서 발생한 예외를 직접 처리
