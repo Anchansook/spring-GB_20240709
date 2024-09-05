@@ -89,7 +89,7 @@ public class WebSecurityConfig {
                 //& permitAll() : 모든 클라이언트가 접근할 수 있도록 지정
                 //& hasRole(권한) : 특정 권한을 가진 클라이언트만 접근할 수 있도록 지정
                 //& authenticated() : 인증된 모든 클라이언트가 접근할 수 있도록 지정
-                .requestMatchers("/anyone/**", "/auth/**").permitAll()
+                .requestMatchers("/anyone/**", "/auth/**", "/oauth2/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/sample/jwt/*").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/service").hasRole("ADMIN")
@@ -99,10 +99,17 @@ public class WebSecurityConfig {
                 //& anyRequest() : requestMatchers로 지정한 메서드 혹은 URL이 아닌 모든 요청
                 .anyRequest().authenticated()
             )
+
+            // OAuth2 인증 처리
+            .oauth2Login(oauth2 -> oauth2
+                .redirectionEndpoint(endPoint -> endPoint.baseUri("/oauth2/callback/*"))
+            )
+
             // 인증 및 인가 과정에서 발생한 예외를 직접 처리
             .exceptionHandling(exceptionHandling -> exceptionHandling
                 .authenticationEntryPoint(new FailedAuthenticationEntryPoint())
             )
+
             // jwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 등록
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
